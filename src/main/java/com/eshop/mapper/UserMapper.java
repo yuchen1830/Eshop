@@ -1,2 +1,24 @@
-package com.eshop.mapper;public class UserMapper {
+package com.eshop.mapper;
+
+import com.eshop.dto.UserDto;
+import com.eshop.entity.User;
+
+public class UserMapper {
+    public static UserDto mapToUserDto(User user) {
+        return new UserDto(
+            user.getId(),
+            user.getFirstName(),
+            user.getLastName(),
+            user.getEmail()
+        );
+    }
+
+    public static User mapToUser(UserDto userDto) {
+        return new User(
+                userDto.getId(),
+                userDto.getFirstName(),
+                userDto.getLastName(),
+                userDto.getEmail()
+        );
+    }
 }

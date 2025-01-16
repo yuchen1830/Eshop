@@ -1,7 +1,11 @@
 package com.eshop;
 
-public class Main {
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication(scanBasePackages = "com.eshop")
+public class EShopApplication {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        SpringApplication.run(EShopApplication.class, args);
     }
 }
