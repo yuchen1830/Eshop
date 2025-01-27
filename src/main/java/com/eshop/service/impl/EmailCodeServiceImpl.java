@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -89,6 +90,28 @@ public class EmailCodeServiceImpl implements EmailCodeService {
                 throw new RuntimeException(ex);
             }
         }
+    }
+
+    @Override
+    public void verifyEmailCode(String email, String code) {
+        EmailCode emailCode = this.emailCodeRepository.findByEmailAndCode(email, code);
+        if(null == emailCode) {
+            try {
+                throw new BusinessException("Email Verification Code Is Not Correct.");
+            } catch (BusinessException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        long timeInMills = emailCode.getCreateTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+        if(emailCode.getStatus().equals(EmailCode.Status.USED) || System.currentTimeMillis() - timeInMills> Constant.LENGTH_15 * 1000 * 60) {
+            try {
+                throw new BusinessException("This Verification Code Already Expired.");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        this.disableEmailCode(email);
     }
 
 }

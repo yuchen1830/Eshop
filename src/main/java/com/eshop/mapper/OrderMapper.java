@@ -28,17 +28,17 @@ public class OrderMapper {
         );
     }
 
-    public static Order mapToOrder(OrderDto orderDto, List<OrderItem> orderItems) {
-        if(orderDto == null) return null;
-        return new Order(
-                orderDto.getId(),
-                UserMapper.mapToUser(orderDto.getUserDto()),
-                orderDto.getOrderDate(),
-                orderItems!= null? orderItems : new ArrayList<>(),
-                orderDto.getTotalAmount(),
-                orderDto.getOrderStatus(),
-                orderDto.getAddress()
-        );
-    }
+//    public static Order mapToOrder(OrderDto orderDto, List<OrderItem> orderItems) {
+//        if(orderDto == null) return null;
+//        return new Order(
+//                orderDto.getId(),
+//                UserMapper.mapToUser(orderDto.getUserDto()),
+//                orderDto.getOrderDate(),
+//                orderItems!= null? orderItems : new ArrayList<>(),
+//                orderDto.getTotalAmount(),
+//                orderDto.getOrderStatus(),
+//                orderDto.getAddress()
+//        );
+//    }
 
 }

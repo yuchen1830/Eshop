@@ -1,5 +1,6 @@
 package com.eshop.entity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +29,11 @@ public class User {
     @Column(name = "email_id", nullable = false, unique = true)
     private String email;
 
+    @Column(name = "is_admin", nullable = false)
+    private Boolean isAdmin;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
     //TODO: one to many address and payment
-    //TODO: encrypted password
-    //TODO: Boolean ifAdmin for permission
 }

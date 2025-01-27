@@ -90,7 +90,6 @@ public class OrderServiceImpl implements OrderService {
         return orders.stream().map(OrderMapper::mapToOrderDto)
                 .collect(Collectors.toList());
     }
-    // TODO: fetch the number of orders for each user
 
     @Override
     public List<OrderDto> getOrdersWithinDateRange(Date startDate, Date endDate) {

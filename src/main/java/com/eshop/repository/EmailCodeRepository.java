@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface EmailCodeRepository extends JpaRepository<EmailCode, Long> {
     List<EmailCode> findByEmail(String email);
+    EmailCode findByEmailAndCode(String email, String code);
 }

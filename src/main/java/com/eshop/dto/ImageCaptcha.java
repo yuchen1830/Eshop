@@ -1,5 +1,6 @@
 package com.eshop.dto;
 
+import com.eshop.utils.StringTools;
 import jakarta.annotation.PostConstruct;
 import lombok.*;
 import org.apache.commons.lang3.StringUtils;
@@ -14,10 +15,8 @@ import java.util.Random;
 import java.util.List;
 
 @Getter
-@Builder
 @Component
 @NoArgsConstructor
-@AllArgsConstructor
 public class ImageCaptcha {
     private int width = 160;
     private int height = 40;
@@ -41,8 +40,11 @@ public class ImageCaptcha {
             new Font("Gill Sans Ultra Bold", Font.PLAIN, 0)
     );
 
-    @PostConstruct
-    public void init(){
+    public ImageCaptcha (int width, int height, int digitsCount, int lineCount) {
+        this.width = width;
+        this.height = height;
+        this.digitsCount = digitsCount;
+        this.lineCount = lineCount;
         createImage();
     }
     private void createImage() {
@@ -99,16 +101,20 @@ public class ImageCaptcha {
         }
     }
 
+//    private String randomStr(int length) {
+//        if(StringUtils.isEmpty(allowedChars)) {
+//            throw new IllegalArgumentException("Allowed Characters not Configured");
+//        }
+//        StringBuilder result = new StringBuilder(length);
+//        int len = allowedChars.length();
+//        for(int i = 0; i< length; i++) {
+//            result.append(allowedChars.charAt(random.nextInt(len)));
+//        }
+//        return result.toString();
+//    }
+
     private String randomStr(int length) {
-        if(StringUtils.isEmpty(allowedChars)) {
-            throw new IllegalArgumentException("Allowed Characters not Configured");
-        }
-        StringBuilder result = new StringBuilder(length);
-        int len = allowedChars.length();
-        for(int i = 0; i< length; i++) {
-            result.append(allowedChars.charAt(random.nextInt(len)));
-        }
-        return result.toString();
+        return StringTools.getRandomString(length);
     }
 
     private Color getRandomColor(int fc, int bc) {
