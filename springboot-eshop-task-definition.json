@@ -1,9 +1,9 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-west-1:354918374548:task-definition/springboot-eshop-task-definition:1",
+    "taskDefinitionArn": "arn:aws:ecs:us-west-1:354918374548:task-definition/springboot-eshop-task-definition:2",
     "containerDefinitions": [
         {
             "name": "eshop",
-            "image": "354918374548.dkr.ecr.us-west-1.amazonaws.com/eshop:latest",
+            "image": "354918374548.dkr.ecr.us-west-1.amazonaws.com/eshop:f4a159ebaf2f9f6cfbd22b7b1c16bfd26eb2664c",
             "cpu": 0,
             "portMappings": [
                 {
@@ -16,10 +16,8 @@
             ],
             "essential": true,
             "environment": [],
-            "environmentFiles": [],
             "mountPoints": [],
             "volumesFrom": [],
-            "ulimits": [],
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
@@ -29,8 +27,7 @@
                     "max-buffer-size": "25m",
                     "awslogs-region": "us-west-1",
                     "awslogs-stream-prefix": "ecs"
-                },
-                "secretOptions": []
+                }
             },
             "systemControls": []
         }
@@ -39,7 +36,7 @@
     "taskRoleArn": "arn:aws:iam::354918374548:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::354918374548:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 1,
+    "revision": 2,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -88,7 +85,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2025-02-10T08:33:41.069Z",
-    "registeredBy": "arn:aws:iam::354918374548:root",
+    "registeredAt": "2025-02-10T21:47:22.778Z",
+    "registeredBy": "arn:aws:iam::354918374548:user/ecs-deployer",
     "tags": []
 }
