@@ -1,9 +1,9 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-west-1:354918374548:task-definition/springboot-eshop-task-definition:2",
+    "taskDefinitionArn": "arn:aws:ecs:us-west-1:354918374548:task-definition/springboot-eshop-task-definition:7",
     "containerDefinitions": [
         {
             "name": "eshop",
-            "image": "354918374548.dkr.ecr.us-west-1.amazonaws.com/eshop:f4a159ebaf2f9f6cfbd22b7b1c16bfd26eb2664c",
+            "image": "354918374548.dkr.ecr.us-west-1.amazonaws.com/eshop:2bf6124bc93ef90f3bd5e89342daf7422c8dfc0a",
             "cpu": 0,
             "portMappings": [
                 {
@@ -15,7 +15,20 @@
                 }
             ],
             "essential": true,
-            "environment": [],
+            "environment": [
+                {
+                    "name": "SPRING_DATASOURCE_USERNAME",
+                    "value": "root"
+                },
+                {
+                    "name": "SPRING_DATASOURCE_URL",
+                    "value": "jdbc:mysql://user-db.cbe2miq6e29x.us-west-1.rds.amazonaws.com:3306/your-database-name"
+                },
+                {
+                    "name": "SPRING_DATASOURCE_PASSWORD",
+                    "value": "usereshop123"
+                }
+            ],
             "mountPoints": [],
             "volumesFrom": [],
             "logConfiguration": {
@@ -27,7 +40,8 @@
                     "max-buffer-size": "25m",
                     "awslogs-region": "us-west-1",
                     "awslogs-stream-prefix": "ecs"
-                }
+                },
+                "secretOptions": []
             },
             "systemControls": []
         }
@@ -36,7 +50,7 @@
     "taskRoleArn": "arn:aws:iam::354918374548:role/ecsTaskExecutionRole",
     "executionRoleArn": "arn:aws:iam::354918374548:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 2,
+    "revision": 7,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -85,7 +99,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2025-02-10T21:47:22.778Z",
-    "registeredBy": "arn:aws:iam::354918374548:user/ecs-deployer",
+    "registeredAt": "2025-02-10T23:13:35.837Z",
+    "registeredBy": "arn:aws:iam::354918374548:root",
     "tags": []
 }
