@@ -1,6 +1,7 @@
 package com.eshop.controller;
 
 import com.eshop.dto.ProductDto;
+import com.eshop.enums.CategoryEnums;
 import com.eshop.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class ProductController {
         return ResponseEntity.ok(productDto);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<ProductDto>> getAllProducts(){
         List<ProductDto> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
@@ -45,5 +46,11 @@ public class ProductController {
     public ResponseEntity<String> deleteProduct(@PathVariable("id") UUID productId) {
         productService.deleteProduct(productId);
         return ResponseEntity.ok("Product is deleted");
+    }
+
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<ProductDto>> getProductByCategory(@PathVariable("category") CategoryEnums category) {
+        List<ProductDto> products = productService.getProductByCategory(category);
+        return ResponseEntity.ok(products);
     }
 }

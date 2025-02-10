@@ -1,6 +1,8 @@
 package com.eshop.controller;
 
 import com.eshop.dto.OrderDto;
+import com.eshop.dto.OrderItemDto;
+import com.eshop.service.OrderItemService;
 import com.eshop.service.OrderService;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderController {
     private OrderService orderService;
+    private OrderItemService orderItemService;
 
     /**
      * Add an Order
@@ -38,7 +41,7 @@ public class OrderController {
     /**
      * Get All Orders
      */
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<OrderDto>> getAllOrders(){
         List<OrderDto> orders = orderService.getAllOrders();
         return ResponseEntity.ok(orders);
@@ -63,8 +66,8 @@ public class OrderController {
         return ResponseEntity.ok("Order is deleted");
     }
 
-    @GetMapping("{userId}")
-    public ResponseEntity<List<OrderDto>> getUserOrder(@RequestParam("userId") Long userId) {
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<OrderDto>> getUserOrder(@PathVariable("userId") Long userId) {
         List<OrderDto> orders = orderService.getOrdersByUser(userId);
         return ResponseEntity.ok(orders);
     }
@@ -74,5 +77,11 @@ public class OrderController {
                                                                    @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd")Date endDate) {
         List<OrderDto> orders = orderService.getOrdersWithinDateRange(startDate, endDate);
         return ResponseEntity.ok(orders);
+    }
+
+    @GetMapping("/{orderId}/items")
+    public ResponseEntity<List<OrderItemDto>> getOrderItems(@PathVariable Long orderId) {
+        List<OrderItemDto> orderItems = orderItemService.getOrderItemsByOrderId(orderId);
+        return ResponseEntity.ok(orderItems);
     }
 }

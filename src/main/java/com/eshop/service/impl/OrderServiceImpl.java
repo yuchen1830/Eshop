@@ -2,13 +2,13 @@ package com.eshop.service.impl;
 
 import com.eshop.dto.OrderDto;
 import com.eshop.dto.OrderItemDto;
-import com.eshop.entity.Order;
-import com.eshop.entity.OrderItem;
-import com.eshop.entity.Product;
-import com.eshop.entity.User;
+import com.eshop.dto.ProductDto;
+import com.eshop.entity.*;
+import com.eshop.exception.BusinessException;
 import com.eshop.exception.ResourceNotFoundException;
 import com.eshop.mapper.OrderMapper;
 import com.eshop.repository.OrderRepository;
+import com.eshop.repository.ProductRepository;
 import com.eshop.repository.UserRepository;
 import com.eshop.service.OrderItemService;
 import com.eshop.service.OrderService;
@@ -16,7 +16,9 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,6 +30,7 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
     private UserRepository userRepository;
     private OrderItemService orderItemService;
+    private ProductRepository productRepository;
 
     @Override
     public OrderDto createOrder(OrderDto orderDto) {
@@ -46,6 +49,40 @@ public class OrderServiceImpl implements OrderService {
 
         preSavedOrder.calculateTotalAmount();
         Order savedOrder = orderRepository.save(preSavedOrder);
+        return OrderMapper.mapToOrderDto(savedOrder);
+    }
+
+    @Override
+    @Transactional
+    public OrderDto submitOrder(User user, List<CartItem> cartItems, String address) {
+        Order order = new Order();
+        order.setUser(user);
+        order.setOrderDate(new Date());
+        order.setOrderStatus(Order.OrderStatus.PENDING);
+        order.setAddress(address);
+        List<OrderItem> orderItems = new ArrayList<>();
+        for(CartItem item : cartItems) {
+            Product product = item.getProduct();
+            if (product.getStock() < item.getQuantity()) {
+                try {
+                    throw new BusinessException("Insufficient stock");
+                } catch (BusinessException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            product.setStock(product.getStock() - item.getQuantity());
+            productRepository.save(product);
+            OrderItem orderItem = new OrderItem();
+            orderItem.setOrder(order);
+            orderItem.setQuantity(item.getQuantity());
+            orderItem.setProduct(product);
+            orderItem.setUnitPrice(item.getUnitPrice());
+            orderItem.setTotalPrice(item.getTotalPrice());
+            orderItems.add(orderItem);
+        }
+        order.setOrderItems(orderItems);
+        order.calculateTotalAmount();
+        Order savedOrder = orderRepository.save(order);
         return OrderMapper.mapToOrderDto(savedOrder);
     }
 
@@ -102,4 +139,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     //TODO: update order status depends on shipping service
+
+
 }

@@ -2,13 +2,11 @@ package com.eshop.service.impl;
 
 import com.eshop.dto.ProductDto;
 import com.eshop.entity.Product;
-import com.eshop.entity.User;
+import com.eshop.enums.CategoryEnums;
 import com.eshop.exception.ResourceNotFoundException;
 import com.eshop.mapper.ProductMapper;
-import com.eshop.mapper.UserMapper;
 import com.eshop.repository.ProductRepository;
 import com.eshop.service.ProductService;
-import com.eshop.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -63,5 +61,13 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Product " + productId + " is not found"));
 
         productRepository.deleteById(productId);
+    }
+
+    @Override
+    public List<ProductDto> getProductByCategory(CategoryEnums category) {
+        List<Product> products = productRepository.findByCategory(category);
+        return products.stream()
+                .map(ProductMapper::mapToProductDto)
+                .collect(Collectors.toList());
     }
 }
